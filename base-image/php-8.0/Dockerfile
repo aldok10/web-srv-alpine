@@ -1,7 +1,7 @@
 FROM php:8.0.22-fpm-alpine3.15
 
-ENV NGINX_VERSION 1.20.2
-ENV NJS_VERSION   0.7.0
+ENV NGINX_VERSION 1.22.0
+ENV NJS_VERSION   0.7.6
 ENV PKG_RELEASE   1
 
 # install necessary alpine packages
