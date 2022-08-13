@@ -1,4 +1,4 @@
-FROM php:7.4-fpm-alpine3.15
+FROM php:7.4-fpm-alpine3.16
 
 ENV NGINX_VERSION 1.22.0
 ENV NJS_VERSION   0.7.6
