@@ -30,8 +30,8 @@ Repository: https://github.com/aldok10/web-srv-alpine
 ![php 7.4](https://img.shields.io/badge/php-7.4-brightgreen.svg)
 ![php 7.3](https://img.shields.io/badge/php-7.3-brightgreen.svg)
 ![php 7.2](https://img.shields.io/badge/php-7.2-brightgreen.svg)
-![php 7.1](https://img.shields.io/badge/php-7.2-brightgreen.svg)
-![php 7.0](https://img.shields.io/badge/php-7.2-brightgreen.svg)
+![php 7.1](https://img.shields.io/badge/php-7.1-brightgreen.svg)
+![php 7.0](https://img.shields.io/badge/php-7.0-brightgreen.svg)
 ![License MIT](https://img.shields.io/badge/license-MIT-blue.svg)
 
 ## Goal of this project
