@@ -34,14 +34,14 @@ RUN apk add --no-cache \
   supervisor
 
 # Create symlink so programs depending on `php` still function
-RUN ln -s /usr/bin/php81 /usr/bin/php
+RUN ln -s /usr/bin/php${PHP_VERSION} /usr/bin/php
 
 # Configure nginx
 COPY config/nginx.conf /etc/nginx/nginx.conf
 
 # Configure PHP-FPM
-COPY config/fpm-pool.conf /etc/php81/php-fpm.d/www.conf
-COPY config/php.ini /etc/php81/conf.d/custom.ini
+COPY config/fpm-pool.conf /etc/php${PHP_VERSION}/php-fpm.d/www.conf
+COPY config/php.ini /etc/php${PHP_VERSION}/conf.d/custom.ini
 
 # Configure supervisord
 COPY config/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
