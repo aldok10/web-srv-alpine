@@ -1,0 +1,18 @@
+version: '3'
+services:
+  app:
+    image: ${IMAGE_NAME:-app}:${IMAGE_TAG:-test}
+    build: .
+    environment:
+      - APP_ENV=local
+    volumes:
+      - ./src:/var/www/html
+    ports:
+      - '80:80'
+  sut:
+    image: alpine:3.16
+    depends_on:
+      - app
+    command: /tmp/run_tests.sh
+    volumes:
+      - "./scripts/run_tests.sh:/tmp/run_tests.sh:ro"
