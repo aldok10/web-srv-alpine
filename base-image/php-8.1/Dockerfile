@@ -1,67 +1,65 @@
-FROM php:8.1-fpm-alpine3.16
+ARG ALPINE_VERSION=3.16
 
-ENV NGINX_VERSION 1.22.0
-ENV NJS_VERSION   0.7.6
-ENV PKG_RELEASE   1
+FROM alpine:${ALPINE_VERSION}
 
-# install necessary alpine packages
-RUN apk update && apk add --no-cache \
-    zip \
-    unzip \
-    dos2unix \
-    supervisor \
-    libpng-dev \
-    libzip-dev \
-    freetype-dev \
-    $PHPIZE_DEPS \
-    libjpeg-turbo-dev
+LABEL Maintainer="Aldo Karendra <dev.akarendra835@gmail.com>"
+LABEL Description="Lightweight container with Nginx 1.22 & PHP 8.1 based on Alpine Linux."
 
-# compile native PHP packages
-RUN docker-php-ext-install \
-    gd \
-    pcntl \
-    bcmath \
-    mysqli \
-    pdo_mysql
+# Setup document root
+WORKDIR /var/www/html
 
-# configure packages
-RUN docker-php-ext-configure gd --with-freetype --with-jpeg
+# Version PHP
+ARG PHP_VERSION=81
 
-# install additional packages from PECL
-RUN pecl install zip && docker-php-ext-enable zip \
-    && pecl install igbinary && docker-php-ext-enable igbinary \
-    && yes | pecl install redis && docker-php-ext-enable redis
+# Install packages and remove default server definition
+RUN apk add --no-cache \
+  curl \
+  nginx \
+  php${PHP_VERSION} \
+  php${PHP_VERSION}-ctype \
+  php${PHP_VERSION}-curl \
+  php${PHP_VERSION}-dom \
+  php${PHP_VERSION}-fpm \
+  php${PHP_VERSION}-gd \
+  php${PHP_VERSION}-intl \
+  php${PHP_VERSION}-mbstring \
+  php${PHP_VERSION}-mysqli \
+  php${PHP_VERSION}-opcache \
+  php${PHP_VERSION}-openssl \
+  php${PHP_VERSION}-phar \
+  php${PHP_VERSION}-session \
+  php${PHP_VERSION}-xml \
+  php${PHP_VERSION}-xmlreader \
+  php${PHP_VERSION}-zlib \
+  supervisor
 
-# install nginx
-RUN set -x \
-    && nginxPackages=" \
-        nginx=${NGINX_VERSION}-r${PKG_RELEASE} \
-        nginx-module-geoip=${NGINX_VERSION}-r${PKG_RELEASE} \
-        nginx-module-image-filter=${NGINX_VERSION}-r${PKG_RELEASE} \
-        nginx-module-njs=${NGINX_VERSION}.${NJS_VERSION}-r${PKG_RELEASE} \
-    " \
-    set -x \
-    && KEY_SHA512="e7fa8303923d9b95db37a77ad46c68fd4755ff935d0a534d26eba83de193c76166c68bfe7f65471bf8881004ef4aa6df3e34689c305662750c0172fca5d8552a *stdin" \
-    && apk add --no-cache --virtual .cert-deps \
-        openssl \
-    && wget -O /tmp/nginx_signing.rsa.pub https://nginx.org/keys/nginx_signing.rsa.pub \
-    && if [ "$(openssl rsa -pubin -in /tmp/nginx_signing.rsa.pub -text -noout | openssl sha512 -r)" = "$KEY_SHA512" ]; then \
-        echo "key verification succeeded!"; \
-        mv /tmp/nginx_signing.rsa.pub /etc/apk/keys/; \
-    else \
-        echo "key verification failed!"; \
-        exit 1; \
-    fi \
-    && apk del .cert-deps \
-    && apk add -X "https://nginx.org/packages/alpine/v$(egrep -o '^[0-9]+\.[0-9]+' /etc/alpine-release)/main" --no-cache $nginxPackages
+# Create symlink so programs depending on `php` still function
+RUN ln -s /usr/bin/php81 /usr/bin/php
 
-RUN ln -sf /dev/stdout /var/log/nginx/access.log \
-    && ln -sf /dev/stderr /var/log/nginx/error.log
+# Configure nginx
+COPY config/nginx.conf /etc/nginx/nginx.conf
 
-# copy supervisor configuration
-COPY ./supervisord.conf /etc/supervisord.conf
+# Configure PHP-FPM
+COPY config/fpm-pool.conf /etc/php81/php-fpm.d/www.conf
+COPY config/php.ini /etc/php81/conf.d/custom.ini
 
-EXPOSE 80
+# Configure supervisord
+COPY config/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-# run supervisor
-CMD ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisord.conf"]
+# Make sure files/folders needed by the processes are accessable when they run under the nobody user
+RUN chown -R nobody.nobody /var/www/html /run /var/lib/nginx /var/log/nginx
+
+# Switch to use a non-root user from here on
+USER nobody
+
+# Add application
+COPY --chown=nobody src/ /var/www/html/
+
+# Expose the port nginx is reachable on
+EXPOSE 8080
+
+# Let supervisord start nginx & php-fpm
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
+
+# Configure a healthcheck to validate that everything is up&running
+HEALTHCHECK --timeout=10s CMD curl --silent --fail http://127.0.0.1:8080/fpm-ping
