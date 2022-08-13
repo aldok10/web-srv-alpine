@@ -1,16 +1,18 @@
 # Docker PHP-FPM & Nginx 1.22 on Alpine Linux
 Example PHP-FPM 8.1/8.0/7.4/7.3./7.2 & Nginx 1.22 container image for Docker, built on [Alpine Linux](https://www.alpinelinux.org/).
 
-# Example List
+## Example List
 * ![Example PHP-FPM 8.1](https://github.com/aldok10/web-srv-alpine/tree/main/base-image/php-8.1)
 * ![Example PHP-FPM 8.0](https://github.com/aldok10/web-srv-alpine/tree/main/base-image/php-8.0)
+* ![Example PHP-FPM 7.4](https://github.com/aldok10/web-srv-alpine/tree/main/base-image/php-7.4)
 
+## Details about repository
 Repository: https://github.com/aldok10/web-srv-alpine
 
 * Built on the lightweight and secure Alpine Linux distribution
 * Multi-platform, supporting AMD4, ARMv6, ARMv7, ARM64
 * Very small Docker image size (+/-40MB)
-* Uses PHP 8.1 for better performance, lower CPU usage & memory footprint
+* Uses PHP 8.1 for better performance, lower CPU usage & memory footprint. Or choice another version for you needed.
 * Optimized for 100 concurrent users
 * Optimized to only use resources when there's traffic (by using PHP-FPM's `on-demand` process manager)
 * The services Nginx, PHP-FPM and supervisord run under a non-privileged user (nobody) to make it more secure
