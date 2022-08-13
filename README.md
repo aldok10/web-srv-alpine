@@ -1,5 +1,5 @@
 # Docker PHP-FPM & Nginx 1.22 on Alpine Linux
-Example PHP-FPM 8.1/8.0/7.4/7.3./7.2 & Nginx 1.22 container image for Docker, built on [Alpine Linux](https://www.alpinelinux.org/).
+Example PHP-FPM 8.1/8.0/7.4/7.3./7.2/7.1/7.0 & Nginx 1.22 container image for Docker, built on [Alpine Linux](https://www.alpinelinux.org/).
 
 ## Example List
 * ![Example PHP-FPM 8.1](https://github.com/aldok10/web-srv-alpine/tree/main/base-image/php-8.1)
@@ -7,6 +7,8 @@ Example PHP-FPM 8.1/8.0/7.4/7.3./7.2 & Nginx 1.22 container image for Docker, bu
 * ![Example PHP-FPM 7.4](https://github.com/aldok10/web-srv-alpine/tree/main/base-image/php-7.4)
 * ![Example PHP-FPM 7.3](https://github.com/aldok10/web-srv-alpine/tree/main/base-image/php-7.3)
 * ![Example PHP-FPM 7.2](https://github.com/aldok10/web-srv-alpine/tree/main/base-image/php-7.2)
+* ![Example PHP-FPM 7.1](https://github.com/aldok10/web-srv-alpine/tree/main/base-image/php-7.1)
+* ![Example PHP-FPM 7.0](https://github.com/aldok10/web-srv-alpine/tree/main/base-image/php-7.0)
 
 ## Details about repository
 Repository: https://github.com/aldok10/web-srv-alpine
@@ -28,6 +30,8 @@ Repository: https://github.com/aldok10/web-srv-alpine
 ![php 7.4](https://img.shields.io/badge/php-7.4-brightgreen.svg)
 ![php 7.3](https://img.shields.io/badge/php-7.3-brightgreen.svg)
 ![php 7.2](https://img.shields.io/badge/php-7.2-brightgreen.svg)
+![php 7.1](https://img.shields.io/badge/php-7.2-brightgreen.svg)
+![php 7.0](https://img.shields.io/badge/php-7.2-brightgreen.svg)
 ![License MIT](https://img.shields.io/badge/license-MIT-blue.svg)
 
 ## Goal of this project
