@@ -1,4 +1,4 @@
-FROM akarendra835/web-srv:php8.0-fpm-nginx-1.20-alpine
+FROM akarendra835/web-srv:php8.0-fpm-nginx-1.22-alpine
 
 # set composer related environment variables
 ENV PATH="/composer/vendor/bin:$PATH" \
