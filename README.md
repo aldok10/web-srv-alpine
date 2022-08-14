@@ -42,13 +42,13 @@ the best practices and is easy to understand and modify to your needs.
 
 Start the Docker container:
 
-    docker run -p 80:8080 akarendra835/web-srv
+    docker run --rm -p 80:80 -e APP_ENV=local akarendra835/web-srv /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
 
 See the PHP info on http://localhost, or the static html page on http://localhost/test.html
 
 Or mount your own code to be served by PHP-FPM & Nginx
 
-    docker run -p 80:8080 -v ~/my-codebase:/var/www/html akarendra835/web-srv
+    docker run --rm -p 80:80 -v ~/my-codebase:/var/www/html -e APP_ENV=local akarendra835/web-srv /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
 
 ### Docker Hub repository
 This image can be pulled from Docker Hub under the name [akarendra835/web-srv](https://hub.docker.com/r/akarendra835/web-srv).
@@ -59,24 +59,24 @@ If you want to extend or customize that you can do so by mounting a configuratio
 
 Nginx configuration:
 
-    docker run -v "`pwd`/nginx-server.conf:/etc/nginx/conf.d/server.conf" akarendra835/web-srv
+    docker run -v "`pwd`/nginx-server.conf:/etc/nginx/conf.d/server.conf" akarendra835/web-srv /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
 
 PHP configuration:
 
 ```bash
 # for php version 8.1 and 8.0
-docker run -v "`pwd`/php-setting.ini:/etc/php8/conf.d/settings.ini" akarendra835/web-srv
+docker run -v "`pwd`/php-setting.ini:/etc/php8/conf.d/settings.ini" -e APP_ENV=local akarendra835/web-srv /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
 # for php version 7
-docker run -v "`pwd`/php-setting.ini:/etc/php7/conf.d/settings.ini" akarendra835/web-srv
+docker run -v "`pwd`/php-setting.ini:/etc/php7/conf.d/settings.ini" -e APP_ENV=local akarendra835/web-srv /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
 ```
 
 PHP-FPM configuration:
 
 ```bash
 # for php version 8.1 and 8.0
-docker run -v "`pwd`/php-fpm-settings.conf:/etc/php8/php-fpm.d/server.conf" akarendra835/web-srv
+docker run -v "`pwd`/php-fpm-settings.conf:/etc/php8/php-fpm.d/server.conf" -e APP_ENV=local akarendra835/web-srv /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
 # for php version 7
-docker run -v "`pwd`/php-fpm-settings.conf:/etc/php7/php-fpm.d/server.conf" akarendra835/web-srv
+docker run -v "`pwd`/php-fpm-settings.conf:/etc/php7/php-fpm.d/server.conf" -e APP_ENV=local akarendra835/web-srv /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
 ```
 
 _Note; Because `-v` requires an absolute path I've added `pwd` in the example to return the absolute path to the current directory_
