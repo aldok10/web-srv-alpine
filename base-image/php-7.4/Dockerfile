@@ -15,10 +15,13 @@ ARG PHP_VERSION=7
 RUN apk add --no-cache \
   curl \
   nginx \
-  php${PHP_VERSION} \
+  nginx-mod-http-headers-more \
+  php${PHP_VERSION}-bcmath \
+  php${PHP_VERSION}-cli \
   php${PHP_VERSION}-ctype \
   php${PHP_VERSION}-curl \
   php${PHP_VERSION}-dom \
+  php${PHP_VERSION}-fileinfo \
   php${PHP_VERSION}-fpm \
   php${PHP_VERSION}-gd \
   php${PHP_VERSION}-intl \
@@ -26,10 +29,20 @@ RUN apk add --no-cache \
   php${PHP_VERSION}-mysqli \
   php${PHP_VERSION}-opcache \
   php${PHP_VERSION}-openssl \
+  php${PHP_VERSION}-pdo \
+  php${PHP_VERSION}-pdo_pgsql \
+  php${PHP_VERSION}-pdo_mysql \
+  php${PHP_VERSION}-pgsql \
   php${PHP_VERSION}-phar \
+  php${PHP_VERSION}-redis \
   php${PHP_VERSION}-session \
+  php${PHP_VERSION}-simplexml \
+  php${PHP_VERSION}-sodium \
+  php${PHP_VERSION}-tokenizer \
   php${PHP_VERSION}-xml \
+  php${PHP_VERSION}-xmlwriter \
   php${PHP_VERSION}-xmlreader \
+  php${PHP_VERSION}-zip \
   php${PHP_VERSION}-zlib \
   supervisor
 
@@ -56,7 +69,7 @@ COPY --chown=nobody src/ /var/www/html/
 EXPOSE 80
 
 # Let supervisord start nginx & php-fpm
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
+# CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
 
 # Configure a healthcheck to validate that everything is up&running
 HEALTHCHECK --timeout=10s CMD curl --silent --fail http://127.0.0.1/fpm-ping
