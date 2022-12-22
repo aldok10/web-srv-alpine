@@ -118,3 +118,8 @@ RUN composer install \
 FROM akarendra835/web-srv
 COPY --chown=nginx --from=composer /app /var/www/html
 ```
+
+## Example to publish the docker image
+```
+docker buildx build --platform linux/amd64,linux/arm64 -t akarendra835/web-srv:tags --push
+```
