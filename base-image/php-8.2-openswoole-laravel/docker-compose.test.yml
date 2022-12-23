@@ -1,0 +1,15 @@
+version: '3.8'
+
+# Workflow
+services:
+  openswoole:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    container_name: openswoole
+    ports:
+      - "1215:1215"
+    volumes:
+      - ./src:/app:delegated
+    # user: site
+    command: php artisan swoole:http start
