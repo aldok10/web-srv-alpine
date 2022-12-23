@@ -1,0 +1,15 @@
+version: '3.8'
+
+# Workflow
+services:
+  openswoole:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+    container_name: openswoole
+    ports:
+      - "1215:8000"
+    volumes:
+      - ./:/app:delegated
+    # user: site
+    # command: php artisan octane:start --server=swoole --host=0.0.0.0 --port=8000
