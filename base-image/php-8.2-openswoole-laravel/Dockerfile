@@ -38,12 +38,12 @@ RUN apk add --no-cache freetype libpng libjpeg-turbo freetype-dev libpng-dev lib
 # Install common extensions & openswoole
 COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/bin/
 RUN install-php-extensions gd curl json mbstring pdo pdo_mysql xml zip bcmath iconv pdo_pgsql \
-    && apk add --no-cache libstdc++ supervisor nano unzip libpq libpq-dev ${PHPIZE_DEPS} \
+    && apk add --no-cache libstdc++ curl-dev supervisor nano unzip libpq libpq-dev ${PHPIZE_DEPS} \
     && pecl install -D \ 
         'enable-openssl="yes" enable-http2="yes" enable-swoole-curl="yes" enable-mysqlnd="yes" with-postgres="yes" enable-cares="yes"' \
         openswoole-$OPENSWOOLE_VERSION \
     && docker-php-ext-enable openswoole \
-    && apk del ${PHPIZE_DEPS} libpq-dev \
+    && apk del ${PHPIZE_DEPS} libpq-dev curl-dev \
     && docker-php-source delete \
     && rm -rf /var/cache/apk/* /tmp/* /var/tmp/*
 
