@@ -8,8 +8,8 @@ services:
       dockerfile: ./Dockerfile
     container_name: openswoole
     ports:
-      - "1215:1215"
+      - "1215:8000"
     volumes:
       - ./src:/app:delegated
     # user: site
-    command: php artisan swoole:http start
+    # command: php artisan octane:start --server=swoole --host=0.0.0.0 --port=8000
