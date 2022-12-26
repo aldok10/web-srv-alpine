@@ -3,6 +3,9 @@ FROM akarendra835/web-srv:8.2-laravel-openswoole-v22.0.0
 # Install dependencies nodejs and npm for development [Comment on production]
 RUN apk add --no-cache npm nodejs
 
+# Install composer from the official image
+COPY --from=composer /usr/bin/composer /usr/bin/composer
+
 # Install other extensions if needed
 RUN install-php-extensions redis \
 	&& docker-php-source delete \
