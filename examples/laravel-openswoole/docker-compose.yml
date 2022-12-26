@@ -13,3 +13,64 @@ services:
       - ./:/app:delegated
     # user: site
     # command: php artisan octane:start --server=swoole --host=0.0.0.0 --port=8000
+  postgres:
+    image: postgres:alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme}
+      PGDATA: /data/postgres
+    volumes:
+       - postgres:/data/postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - docker-net
+    restart: unless-stopped
+
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    volumes:
+       - pgadmin:/var/lib/pgadmin
+    ports:
+      - "${PGADMIN_PORT:-5050}:80"
+    networks:
+      - docker-net
+    restart: unless-stopped
+
+  graphql-engine:
+    image: hasura/graphql-engine:v2.16.1
+    ports:
+      - "8080:8080"
+    depends_on:
+      - "postgres"
+    networks:
+      - docker-net
+    restart: unless-stopped
+    environment:
+      ## postgres database to store Hasura metadata
+      - "HASURA_GRAPHQL_METADATA_DATABASE_URL=postgres://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-changeme}@postgres:5432/postgres"
+      ## this env var can be used to add the above postgres database to Hasura as a data source. this can be removed/updated based on your needs
+      - "PG_DATABASE_URL=postgres://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-changeme}@postgres:5432/${DB_DATABASE:-postgres}"
+      ## enable the console served by server
+      - "HASURA_GRAPHQL_ENABLE_CONSOLE=true" # set to "false" to disable console
+      ## enable debugging mode. It is recommended to disable this in production
+      - "HASURA_GRAPHQL_DEV_MODE=true"
+      - "HASURA_GRAPHQL_ENABLED_LOG_TYPES=startup, http-log, webhook-log, websocket-log, query-log"
+      ## uncomment next line to run console offline (i.e load console assets from server instead of CDN)
+      # HASURA_GRAPHQL_CONSOLE_ASSETS_DIR: /srv/console-assets
+      ## uncomment next line to set an admin secret
+      # HASURA_GRAPHQL_ADMIN_SECRET: myadminsecretkey
+
+networks:
+  docker-net:
+    driver: bridge
+
+volumes:
+  postgres:
+  pgadmin:
+  cache:
+    driver: local
