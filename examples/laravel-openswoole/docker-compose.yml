@@ -9,6 +9,8 @@ services:
     container_name: openswoole
     ports:
       - "1215:8000"
+    networks:
+      - docker-net
     volumes:
       - ./:/app:delegated
     # user: site
