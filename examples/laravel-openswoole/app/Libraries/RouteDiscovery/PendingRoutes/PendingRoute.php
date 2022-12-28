@@ -7,6 +7,7 @@ use Illuminate\Support\Str;
 use ReflectionAttribute;
 use ReflectionClass;
 use App\Libraries\RouteDiscovery\Attributes\DiscoveryAttribute;
+use App\Libraries\RouteDiscovery\Attributes\Prefix;
 use App\Libraries\RouteDiscovery\Attributes\Route;
 use SplFileInfo;
 
@@ -48,6 +49,11 @@ class PendingRoute
     public function getRouteAttribute(): ?Route
     {
         return $this->getAttribute(Route::class);
+    }
+
+    public function getPrefixAttribute(): ?Prefix
+    {
+        return $this->getAttribute(Prefix::class);
     }
 
     /**

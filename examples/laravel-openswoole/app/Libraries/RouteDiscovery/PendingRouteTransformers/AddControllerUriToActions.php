@@ -20,6 +20,9 @@ class AddControllerUriToActions implements PendingRouteTransformer
                 $originalActionUri = $action->uri;
 
                 $action->uri = $pendingRoute->uri;
+                if($prefixPendingRoute = $pendingRoute->getPrefixAttribute()) {
+                    $action->uri = $prefixPendingRoute->prefix;
+                }
 
                 if ($originalActionUri) {
                     $action->uri .= "/{$originalActionUri}";
