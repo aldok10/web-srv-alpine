@@ -15,4 +15,9 @@ class TestController extends Controller
     {
         return response($request->all());
     }
+
+    public function test(Request $request)
+    {
+        return response($request->all());
+    }
 }

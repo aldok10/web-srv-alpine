@@ -16,4 +16,15 @@ class HomeController extends Controller
     {
         return response($request->all());
     }
+
+    #[Route(method: 'post', uri: 'testing')]
+    public function indexTest(Request $request)
+    {
+        return response($request->all());
+    }
+
+    private function testPrivate(Request $request)
+    {
+        return response($request->all());
+    }
 }
