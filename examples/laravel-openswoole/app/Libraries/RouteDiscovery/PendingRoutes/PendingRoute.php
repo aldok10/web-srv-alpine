@@ -46,31 +46,37 @@ class PendingRoute
         return $this->namespace() . '\\' . $this->shortControllerName();
     }
 
-    public function getRouteAttribute(): ?Route
+    public function getRouteAttribute(int $keyOfAttribute = 0): ?Route
     {
-        return $this->getAttribute(Route::class);
+        return $this->getAttribute(Route::class, $keyOfAttribute);
     }
 
-    public function getPrefixAttribute(): ?Prefix
+    public function getPrefixAttribute(int $keyOfAttribute = 0): ?Prefix
     {
-        return $this->getAttribute(Prefix::class);
+        return $this->getAttribute(Prefix::class, $keyOfAttribute);
     }
 
     /**
      * @template TDiscoveryAttribute of DiscoveryAttribute
      *
      * @param ?class-string<TDiscoveryAttribute> $attributeClass
+     * @param int $keyOfAttribute
      *
      * @return ?TDiscoveryAttribute
      */
-    public function getAttribute(?string $attributeClass): ?DiscoveryAttribute
+    public function getAttribute(?string $attributeClass, int $keyOfAttribute = 0): ?DiscoveryAttribute
     {
-        $attributes = $this->class->getAttributes($attributeClass, ReflectionAttribute::IS_INSTANCEOF);
+        try {
+            $attributes = $this->class->getAttributes($attributeClass, ReflectionAttribute::IS_INSTANCEOF);
 
-        if (! count($attributes)) {
+            $totalAttributes = count($attributes);
+            if (!$totalAttributes || $totalAttributes > $keyOfAttribute) {
+                return null;
+            }
+
+            return $attributes[$keyOfAttribute]->newInstance();
+        } catch (\Throwable $th) {
             return null;
         }
-
-        return $attributes[0]->newInstance();
     }
 }
