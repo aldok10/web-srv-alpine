@@ -70,7 +70,7 @@ class PendingRoute
             $attributes = $this->class->getAttributes($attributeClass, ReflectionAttribute::IS_INSTANCEOF);
 
             $totalAttributes = count($attributes);
-            if (!$totalAttributes || $totalAttributes > $keyOfAttribute) {
+            if (!$totalAttributes || $totalAttributes < $keyOfAttribute) {
                 return null;
             }
 
