@@ -43,7 +43,7 @@ class TestController extends Controller
             $results = $exception->getErrorDetails();
         }
 
-        return response()->json($results->getData());
+        return response()->json($results->getResults());
     }
 
     public function test(Request $request)
