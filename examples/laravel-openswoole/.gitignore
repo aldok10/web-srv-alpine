@@ -24,3 +24,4 @@ horizon.log
 scheduler.log
 .devcontainer
 .DS_Store
+graphql

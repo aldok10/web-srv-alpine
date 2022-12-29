@@ -9,6 +9,7 @@ services:
     container_name: openswoole
     ports:
       - "1215:8000"
+      - "9001:9001"
     networks:
       - docker-net
     volumes:
